@@ -8,29 +8,35 @@ brew install xuhuanxxx/tap/open-edifier
 
 该 formula 从源码构建 `edifier` CLI。支持边界、使用方法和安全说明以 OpenEdifier 主仓库为准。
 
-## Personal Aliyun CLI and MaxC
+## AliyunX and MaxCX
 
 ```bash
-brew install xuhuanxxx/tap/aliyun-cli-personal xuhuanxxx/tap/maxc-personal
+brew install xuhuanxxx/tap/aliyunx xuhuanxxx/tap/maxcx
+aliyunx version
+maxcx --version
+brew upgrade aliyunx maxcx
 ```
 
-Both formulae download fixed personal Release archives with SHA256 verification.
-MaxC includes its Python runtime. Both are keg-only: existing commands, credentials
-and services are not replaced or configured during installation.
+The fork commands are `aliyunx` and `maxcx`, directly available on PATH. Neither
+installs an `aliyun` or `maxc` alias. Existing official commands and authentication
+configuration are not changed. MaxCX bundles Python; no project virtualenv is needed.
+Version output includes the X release and source revision. Release downloads are
+pinned by SHA256. `aliyunx upgrade` directs users to Homebrew instead of replacing
+itself with an official binary.
 
-```bash
-"$(brew --prefix aliyun-cli-personal)/bin/aliyun" version
-"$(brew --prefix maxc-personal)/bin/maxc" --version
-```
+Bearer remains opt-in. MaxCX defaults its bearer credential process to `aliyunx`;
+an explicit `auth.bearer.cli` path overrides that default. Configuration and job
+formats remain compatible. Invoke `maxcx` directly: the Go CLI's official `maxc`
+plugin is not redirected to this fork.
 
-For opt-in bearer authentication, explicitly select the personal Go executable in
-`auth.bearer.cli` when preparing your own configuration. Installing packages does
-not enable bearer or change authentication. Existing AK/STS modes remain available.
+After verifying the new commands, old packages can be removed with
+`brew uninstall aliyun-cli-personal maxc-personal`. Check any explicit executable
+paths in your own scripts first; this tap does not silently rewrite them.
 
-- [Personal Go releases](https://github.com/xuhuanxxx/aliyun-cli/releases)
-- [Personal MaxC releases](https://github.com/xuhuanxxx/aliyun-odps-console/releases)
+- [AliyunX releases](https://github.com/xuhuanxxx/aliyun-cli/releases)
+- [MaxCX releases](https://github.com/xuhuanxxx/aliyun-odps-console/releases)
 
 Go declares Apache-2.0. The Python 0.9.4 branch and PyPI artifacts do not identify
 a license; this tap makes no new license grant or claim of official support.
 Cross-region bearer support remains empirical, not an official service guarantee.
-Linux MaxC needs glibc 2.35+. macOS builds are not Developer ID notarized.
+Linux MaxCX needs glibc 2.35+. macOS builds are not Developer ID notarized.

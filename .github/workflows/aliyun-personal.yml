@@ -1,4 +1,4 @@
-name: Check personal Aliyun formula
+name: Check AliyunX and MaxCX formulae
 on:
   push:
     branches: ['prepare/aliyun-personal', 'main']
@@ -24,7 +24,10 @@ jobs:
         env:
           HOMEBREW_NO_AUTO_UPDATE: '1'
         run: |
-          brew install xuhuanxxx/tap/aliyun-cli-personal xuhuanxxx/tap/maxc-personal
-          brew test xuhuanxxx/tap/aliyun-cli-personal
-          brew test xuhuanxxx/tap/maxc-personal
+          brew install xuhuanxxx/tap/aliyunx xuhuanxxx/tap/maxcx
+          brew test xuhuanxxx/tap/aliyunx
+          brew test xuhuanxxx/tap/maxcx
+          test -x "$(brew --prefix)/bin/aliyunx"
+          test -x "$(brew --prefix)/bin/maxcx"
           test ! -L "$(brew --prefix)/bin/aliyun"
+          test ! -L "$(brew --prefix)/bin/maxc"
