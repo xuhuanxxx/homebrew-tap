@@ -1,0 +1,29 @@
+name: Check personal Aliyun formula
+on:
+  push:
+    branches: ['prepare/aliyun-personal']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  formula:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-14, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Register checkout as a runner-only tap
+        shell: bash
+        run: |
+          tap_root="$(brew --repository)/Library/Taps/xuhuanxxx/homebrew-tap"
+          mkdir -p "$(dirname "$tap_root")"
+          ln -s "$GITHUB_WORKSPACE" "$tap_root"
+      - name: Build and test without linking the official command
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: '1'
+        run: |
+          brew install --build-from-source xuhuanxxx/tap/aliyun-cli-personal
+          brew test xuhuanxxx/tap/aliyun-cli-personal
+          test ! -L "$(brew --prefix)/bin/aliyun"
