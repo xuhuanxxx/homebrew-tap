@@ -1,7 +1,7 @@
 name: Check personal Aliyun formula
 on:
   push:
-    branches: ['prepare/aliyun-personal']
+    branches: ['prepare/aliyun-personal', 'main']
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,6 +24,7 @@ jobs:
         env:
           HOMEBREW_NO_AUTO_UPDATE: '1'
         run: |
-          brew install --build-from-source xuhuanxxx/tap/aliyun-cli-personal
+          brew install xuhuanxxx/tap/aliyun-cli-personal xuhuanxxx/tap/maxc-personal
           brew test xuhuanxxx/tap/aliyun-cli-personal
+          brew test xuhuanxxx/tap/maxc-personal
           test ! -L "$(brew --prefix)/bin/aliyun"
